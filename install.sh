@@ -75,27 +75,27 @@ else
     exit 1
 fi
 
-# Prompt the user for Tomcat admin credentials
-echo "Please enter Tomcat admin credentials:"
-TOMCAT_ADMIN_USER=$(prompt_for_input "Tomcat Admin Username")
-TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
-
-# Create or update setenv.sh with Tomcat admin environment variables
-if sudo sh -c "cat <<EOL >> /opt/tomcat/bin/setenv.sh
-export TOMCAT_ADMIN_USER=$TOMCAT_ADMIN_USER
-export TOMCAT_ADMIN_PASSWORD=$TOMCAT_ADMIN_PASSWORD
-EOL"; then
-    echo "Tomcat admin environment variables added to setenv.sh."
-else
-    echo "Error: Failed to add Tomcat admin environment variables to setenv.sh."
-    exit 1
-fi
-
 # Make setenv.sh executable
 if sudo chmod +x /opt/tomcat/bin/setenv.sh; then
     echo "setenv.sh made executable."
 else
     echo "Error: Failed to make setenv.sh executable."
+    exit 1
+fi
+
+# Prompt the user for Tomcat admin credentials
+echo "Please enter Tomcat admin credentials:"
+TOMCAT_ADMIN_USER=$(prompt_for_input "Tomcat Admin Username")
+TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
+
+# Create tomcat-credentials.properties file with Tomcat admin credentials
+if sudo sh -c "cat <<EOL > /opt/tomcat/conf/tomcat-credentials.properties
+tomcat.admin.username=$TOMCAT_ADMIN_USER
+tomcat.admin.password=$TOMCAT_ADMIN_PASSWORD
+EOL"; then
+    echo "tomcat-credentials.properties file created with Tomcat admin credentials."
+else
+    echo "Error: Failed to create tomcat-credentials.properties file."
     exit 1
 fi
 
