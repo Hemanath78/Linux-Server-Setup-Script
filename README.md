@@ -33,17 +33,22 @@ Before using this script, ensure you have the following prerequisites:
 
 ## Installation
 
-1. Clone this repository to your local machine or cloud machine:
+1. Install the git in the system using the below command
+```
+sudo dnf install git
+```
+
+2. Clone this repository to your local machine or cloud machine:
  ```
  git clone https://github.com/Hemanath78/Linux-Server-Setup-Script.git
 ```
 
-2. Change to the repository directory:
+3. Change to the repository directory:
 ```
 cd Linux-Server-Setup-Script
 ```
 
-3. Make the script executable:
+4. Make the script executable:
 ```
 chmod +x install.sh
 ```
@@ -82,6 +87,30 @@ You will be asked to provide the following database configuration details:
 - Database Password
 
 These details are used to configure the setenv.sh script for your specific database connection.
+
+## After Configuration
+
+Return to the root directory using the below command
+
+```
+cd ..
+```
+
+Set the shortcuts to start or stop the tomcat by using this command
+
+```
+source ~/.bashrc
+```
+
+### Start the tomcat server
+```
+start-tomcat
+```
+
+### Stop the tomcat server
+```
+stop-tomcat
+```
 
 ## Customization
 
