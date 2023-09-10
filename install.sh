@@ -63,13 +63,20 @@ DATABASE_HOST=$(prompt_for_input "Database Host")
 DATABASE_USERNAME=$(prompt_for_input "Database Username")
 DATABASE_PASSWORD=$(prompt_for_input "Database Password")
 
-# Create setenv.sh with database environment variables
+# Create setenv.sh with database environment variables and Tomcat admin credentials
+echo "Please enter Tomcat admin credentials:"
+TOMCAT_ADMIN_USER=$(prompt_for_input "Tomcat Admin Username")
+TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
+
 if sudo sh -c "cat <<EOL > /opt/tomcat/bin/setenv.sh
+#!/bin/sh
 export DATABASE_HOST=$DATABASE_HOST
 export DATABASE_USERNAME=$DATABASE_USERNAME
 export DATABASE_PASSWORD=$DATABASE_PASSWORD
+export TOMCAT_ADMIN_USER=$TOMCAT_ADMIN_USER
+export TOMCAT_ADMIN_PASSWORD=$TOMCAT_ADMIN_PASSWORD
 EOL"; then
-    echo "setenv.sh file created with database environment variables."
+    echo "setenv.sh file created with environment variables."
 else
     echo "Error: Failed to create setenv.sh file."
     exit 1
@@ -80,22 +87,6 @@ if sudo chmod +x /opt/tomcat/bin/setenv.sh; then
     echo "setenv.sh made executable."
 else
     echo "Error: Failed to make setenv.sh executable."
-    exit 1
-fi
-
-# Prompt the user for Tomcat admin credentials
-echo "Please enter Tomcat admin credentials:"
-TOMCAT_ADMIN_USER=$(prompt_for_input "Tomcat Admin Username")
-TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
-
-# Create tomcat-credentials.properties file with Tomcat admin credentials
-if sudo sh -c "cat <<EOL > /opt/tomcat/conf/tomcat-credentials.properties
-tomcat.admin.username=$TOMCAT_ADMIN_USER
-tomcat.admin.password=$TOMCAT_ADMIN_PASSWORD
-EOL"; then
-    echo "tomcat-credentials.properties file created with Tomcat admin credentials."
-else
-    echo "Error: Failed to create tomcat-credentials.properties file."
     exit 1
 fi
 
