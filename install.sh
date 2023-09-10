@@ -48,6 +48,15 @@ if [ -d "$REPO_DIR" ]; then
     if sudo cp "$REPO_DIR/tomcat-users.xml" /opt/tomcat/conf/tomcat-users.xml && \
        sudo cp "$REPO_DIR/context.xml" /opt/tomcat/webapps/manager/META-INF/context.xml; then
         echo "Configuration files copied from the Git repository."
+
+        # Prompt the user for Tomcat admin credentials
+        echo "Please enter Tomcat admin credentials:"
+        ADMIN_USERNAME=$(prompt_for_input "Tomcat Admin Username")
+        ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
+
+        # Replace placeholders with the provided admin credentials
+        sudo sed -i "s/\${ADMIN_USERNAME}/$ADMIN_USERNAME/g" /opt/tomcat/conf/tomcat-users.xml
+        sudo sed -i "s/\${ADMIN_PASSWORD}/$ADMIN_PASSWORD/g" /opt/tomcat/conf/tomcat-users.xml
     else
         echo "Error: Failed to copy configuration files from the Git repository."
         exit 1
@@ -63,18 +72,11 @@ DATABASE_HOST=$(prompt_for_input "Database Host")
 DATABASE_USERNAME=$(prompt_for_input "Database Username")
 DATABASE_PASSWORD=$(prompt_for_input "Database Password")
 
-# Create setenv.sh with database environment variables and Tomcat admin credentials
-echo "Please enter Tomcat admin credentials:"
-TOMCAT_ADMIN_USER=$(prompt_for_input "Tomcat Admin Username")
-TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
-
 if sudo sh -c "cat <<EOL > /opt/tomcat/bin/setenv.sh
 #!/bin/sh
 export DATABASE_HOST=$DATABASE_HOST
 export DATABASE_USERNAME=$DATABASE_USERNAME
 export DATABASE_PASSWORD=$DATABASE_PASSWORD
-export TOMCAT_ADMIN_USER=$TOMCAT_ADMIN_USER
-export TOMCAT_ADMIN_PASSWORD=$TOMCAT_ADMIN_PASSWORD
 EOL"; then
     echo "setenv.sh file created with environment variables."
 else
