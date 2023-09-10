@@ -90,8 +90,8 @@ TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
 
 # Create tomcat-credentials.properties file with Tomcat admin credentials
 if sudo sh -c "cat <<EOL > /opt/tomcat/conf/tomcat-credentials.properties
-tomcat.admin.username=$TOMCAT_ADMIN_USER
-tomcat.admin.password=$TOMCAT_ADMIN_PASSWORD
+tomcat.admin.username=\"$TOMCAT_ADMIN_USER\"
+tomcat.admin.password=\"$TOMCAT_ADMIN_PASSWORD\"
 EOL"; then
     echo "tomcat-credentials.properties file created with Tomcat admin credentials."
 else
