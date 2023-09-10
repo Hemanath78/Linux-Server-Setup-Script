@@ -42,11 +42,6 @@ else
     echo "Tomcat is already installed."
 fi
 
-# Prompt the user for Tomcat admin credentials
-echo "Please enter Tomcat admin credentials:"
-TOMCAT_USER=$(prompt_for_input "Username")
-TOMCAT_PASSWORD=$(prompt_for_input "Password")
-
 # Copy tomcat-users.xml and context.xml from the cloned Git repository
 REPO_DIR="/home/ec2-user/Linux-Server-Setup-Script" # Replace with the actual path
 if [ -d "$REPO_DIR" ]; then
@@ -77,6 +72,22 @@ EOL"; then
     echo "setenv.sh file created with database environment variables."
 else
     echo "Error: Failed to create setenv.sh file."
+    exit 1
+fi
+
+# Prompt the user for Tomcat admin credentials
+echo "Please enter Tomcat admin credentials:"
+TOMCAT_ADMIN_USER=$(prompt_for_input "Tomcat Admin Username")
+TOMCAT_ADMIN_PASSWORD=$(prompt_for_input "Tomcat Admin Password")
+
+# Create or update setenv.sh with Tomcat admin environment variables
+if sudo sh -c "cat <<EOL >> /opt/tomcat/bin/setenv.sh
+export TOMCAT_ADMIN_USER=$TOMCAT_ADMIN_USER
+export TOMCAT_ADMIN_PASSWORD=$TOMCAT_ADMIN_PASSWORD
+EOL"; then
+    echo "Tomcat admin environment variables added to setenv.sh."
+else
+    echo "Error: Failed to add Tomcat admin environment variables to setenv.sh."
     exit 1
 fi
 
