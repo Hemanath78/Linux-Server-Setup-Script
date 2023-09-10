@@ -1,15 +1,5 @@
 #!/bin/bash
 
-# Function to check if a command succeeded
-check_command_success() {
-    if [ $? -eq 0 ]; then
-        echo "$1"
-    else
-        echo "Error: $2"
-        exit 1
-    fi
-}
-
 # Function to prompt for user input securely
 prompt_for_input() {
     read -p "$1: " -r
@@ -58,9 +48,19 @@ TOMCAT_USER=$(prompt_for_input "Username")
 TOMCAT_PASSWORD=$(prompt_for_input "Password")
 
 # Add user roles to tomcat-users.xml
-sudo sh -c "echo '<role rolename=\"manager-gui\"/>' >> /opt/tomcat/conf/tomcat-users.xml"
-sudo sh -c "echo '<user username=\"$TOMCAT_USER\" password=\"$TOMCAT_PASSWORD\" roles=\"manager-gui\"/>' >> /opt/tomcat/conf/tomcat-users.xml"
-check_command_success "Tomcat admin user added to tomcat-users.xml." "Error: Failed to add Tomcat admin user."
+if sudo sh -c "echo '<role rolename=\"manager-gui\"/>' > /tmp/roles.xml"; then
+    if sudo sh -c "echo '<user username=\"$TOMCAT_USER\" password=\"$TOMCAT_PASSWORD\" roles=\"manager-gui\"/>' > /tmp/users.xml"; then
+        sudo sed -i '/<\/tomcat-users>/ { r /tmp/roles.xml' -e '}' /opt/tomcat/conf/tomcat-users.xml
+        sudo sed -i '/<\/tomcat-users>/ { r /tmp/users.xml' -e '}' /opt/tomcat/conf/tomcat-users.xml
+        echo "Tomcat admin user added to tomcat-users.xml."
+    else
+        echo "Error: Failed to add Tomcat admin user to tomcat-users.xml."
+        exit 1
+    fi
+else
+    echo "Error: Failed to add role to tomcat-users.xml."
+    exit 1
+fi
 
 # Prompt the user for database configuration
 echo "Please enter database configuration:"
@@ -71,9 +71,9 @@ DATABASE_PASSWORD=$(prompt_for_input "Database Password")
 # Create setenv.sh with database environment variables
 if sudo sh -c "cat <<EOL > /opt/tomcat/bin/setenv.sh
 #!/bin/sh
-export DATABASE_HOST=\"$DATABASE_HOST\"
-export DATABASE_USERNAME=\"$DATABASE_USERNAME\"
-export DATABASE_PASSWORD=\"$DATABASE_PASSWORD\"
+export DATABASE_HOST=$DATABASE_HOST
+export DATABASE_USERNAME=$DATABASE_USERNAME
+export DATABASE_PASSWORD=$DATABASE_PASSWORD
 EOL"; then
     echo "setenv.sh file created with database environment variables."
 else
@@ -90,7 +90,11 @@ else
 fi
 
 # Remove the specific Valve block from context.xml
-sudo sed -i '/<Valve className="org.apache.catalina.valves.RemoteAddrValve"/,/<\/Valve>/d' /opt/tomcat/webapps/manager/META-INF/context.xml
-check_command_success "Valve configuration removed from context.xml." "Error: Failed to remove Valve configuration."
+if sudo sed -i '/<Valve className="org.apache.catalina.valves.RemoteAddrValve"/,/<\/Valve>/d' /opt/tomcat/webapps/manager/META-INF/context.xml; then
+    echo "Valve configuration removed from context.xml."
+else
+    echo "Error: Failed to remove Valve configuration from context.xml."
+    exit 1
+fi
 
 echo "Installation and configuration completed."
