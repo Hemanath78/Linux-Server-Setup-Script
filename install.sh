@@ -91,4 +91,12 @@ else
     exit 1
 fi
 
+# Make setenv.sh executable
+if sudo chmod +x /opt/tomcat/bin/setenv.sh; then
+    echo "setenv.sh made executable."
+else
+    echo "Error: Failed to make setenv.sh executable."
+    exit 1
+fi
+
 echo "Installation and configuration completed."
