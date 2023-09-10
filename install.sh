@@ -32,8 +32,8 @@ fi
 # Check if Tomcat is already installed
 if [ ! -d "/opt/tomcat" ]; then
     # Download and extract Tomcat (adjust the version as needed)
-    TOMCAT_VERSION="9.0.50"
-    wget https://dlcdn.apache.org/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-9.0.80.tar.gz
+    TOMCAT_VERSION="9.0.80"
+    wget https://dlcdn.apache.org/tomcat/tomcat-9/v$TOMCAT_VERSION/bin/apache-tomcat-$TOMCAT_VERSION.tar.gz
     if tar -xf apache-tomcat-$TOMCAT_VERSION.tar.gz; then
         echo "Tomcat has been extracted."
     else
