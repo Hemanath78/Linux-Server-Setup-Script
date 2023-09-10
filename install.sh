@@ -47,18 +47,18 @@ echo "Please enter Tomcat admin credentials:"
 TOMCAT_USER=$(prompt_for_input "Username")
 TOMCAT_PASSWORD=$(prompt_for_input "Password")
 
-# Add user roles to tomcat-users.xml
-if sudo sh -c "echo '<role rolename=\"manager-gui\"/>' > /tmp/roles.xml"; then
-    if sudo sh -c "echo '<user username=\"$TOMCAT_USER\" password=\"$TOMCAT_PASSWORD\" roles=\"manager-gui\"/>' > /tmp/users.xml"; then
-        sudo sed -i '/<\/tomcat-users>/ { r /tmp/roles.xml' -e '}' /opt/tomcat/conf/tomcat-users.xml
-        sudo sed -i '/<\/tomcat-users>/ { r /tmp/users.xml' -e '}' /opt/tomcat/conf/tomcat-users.xml
-        echo "Tomcat admin user added to tomcat-users.xml."
+# Copy tomcat-users.xml and context.xml from the cloned Git repository
+REPO_DIR="/home/ec2-user/Linux-Server-Setup-Script" # Replace with the actual path
+if [ -d "$REPO_DIR" ]; then
+    if sudo cp "$REPO_DIR/tomcat-users.xml" /opt/tomcat/conf/tomcat-users.xml && \
+       sudo cp "$REPO_DIR/context.xml" /opt/tomcat/webapps/manager/META-INF/context.xml; then
+        echo "Configuration files copied from the Git repository."
     else
-        echo "Error: Failed to add Tomcat admin user to tomcat-users.xml."
+        echo "Error: Failed to copy configuration files from the Git repository."
         exit 1
     fi
 else
-    echo "Error: Failed to add role to tomcat-users.xml."
+    echo "Error: Repository directory not found."
     exit 1
 fi
 
@@ -70,7 +70,6 @@ DATABASE_PASSWORD=$(prompt_for_input "Database Password")
 
 # Create setenv.sh with database environment variables
 if sudo sh -c "cat <<EOL > /opt/tomcat/bin/setenv.sh
-#!/bin/sh
 export DATABASE_HOST=$DATABASE_HOST
 export DATABASE_USERNAME=$DATABASE_USERNAME
 export DATABASE_PASSWORD=$DATABASE_PASSWORD
@@ -78,22 +77,6 @@ EOL"; then
     echo "setenv.sh file created with database environment variables."
 else
     echo "Error: Failed to create setenv.sh file."
-    exit 1
-fi
-
-# Make setenv.sh executable
-if sudo chmod +x /opt/tomcat/bin/setenv.sh; then
-    echo "setenv.sh made executable."
-else
-    echo "Error: Failed to make setenv.sh executable."
-    exit 1
-fi
-
-# Remove the specific Valve block from context.xml
-if sudo sed -i '/<Valve className="org.apache.catalina.valves.RemoteAddrValve"/,/<\/Valve>/d' /opt/tomcat/webapps/manager/META-INF/context.xml; then
-    echo "Valve configuration removed from context.xml."
-else
-    echo "Error: Failed to remove Valve configuration from context.xml."
     exit 1
 fi
 
