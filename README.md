@@ -1,4 +1,4 @@
-# Bash Script: Installation and Configuration Automation
+# Bash Script: Installation and Configuration Automation by [Hemanath M](https://github.com/Hemanath78)
 
 ## Table of Contents
 
