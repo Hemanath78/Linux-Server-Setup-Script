@@ -92,4 +92,12 @@ else
     exit 1
 fi
 
+# Add shortcuts to start and stop Tomcat in the user's .bashrc file
+USER_HOME=$(eval echo ~$SUDO_USER)
+BASHRC_FILE="$USER_HOME/.bashrc"
+
+echo -e "\n# Tomcat shortcuts" >> "$BASHRC_FILE"
+echo 'alias start-tomcat="cd /opt/tomcat && bin/startup.sh"' >> "$BASHRC_FILE"
+echo 'alias stop-tomcat="cd /opt/tomcat && bin/shutdown.sh"' >> "$BASHRC_FILE"
+
 echo "Installation and configuration completed."
