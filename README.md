@@ -155,7 +155,7 @@ PASSWORD: fssaadmin
 - Go to Eclipse and in Project Explorer right-click on your WEB project. Eclipse>>Project Explorer>>Your WEB project>>Right click>>Show in>>System Explorer.
 <img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/115ae582-2d54-4752-9dc7-768dfd7cd0b0" alt="tomcat-tomcat-cred" width="700"/>
 
-- Once you open System Explorer you can see all the project folders Select your web project folder double and open it there you can see the target folder.
+- Once you open System Explorer you can see all the project folders Select your web project folder and open it there you can see the target folder.
 <img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/68257c6c-8c9e-4419-a9c4-7217736fb400" alt="tomcat-tomcat-cred" width="700"/>
 
 - Now in the target folder you'll find your WAR file.
@@ -163,6 +163,15 @@ PASSWORD: fssaadmin
 
 - That's the WAR file you need to deploy in the Tomcat manager's page.
 - Now on  the tomcat manager's page, WAR deploy section choose the WAR file you want to deploy and upload the WAR. Refer above steps to find your WAR file.
+ <img width="700" alt="image" src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/2330554b-98ad-4a3e-a8b9-159c6d980621">
+ 
+- After choosing your WAR file click on Deploy It'll take some seconds and reloads automatically.
+- This how the application section will look like before Deploying.
+ <img width="700" alt="image" src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/b2c1f92a-374c-44b9-a9cb-001cc3e147f9">
+
+
+- This how the application section will look like after Deploying your war. It show one new application with your WAR file name.
+ <img width="700" alt="image" src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/43f12df9-6626-4f42-a5de-ea97600a1e9c">
 
 
 
@@ -185,6 +194,3 @@ If you'd like to contribute to this project, please follow these steps:
 4. Commit your changes with clear commit messages.
 5. Push your branch to your fork.
 6. Create a pull request.
-
-
-
