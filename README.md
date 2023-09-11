@@ -93,7 +93,7 @@ These details are used to configure the setenv.sh script for your specific datab
 Return to the root directory using the below command
 
 ```
-cd ..
+cd ~
 ```
 
 Set the shortcuts to start or stop the tomcat by using this command
