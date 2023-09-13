@@ -26,8 +26,10 @@ The script automates these tasks and provides interactive prompts for user input
 
 Before using this script, ensure you have the following prerequisites:
 
-- A Linux system (tested on CentOS)
-- Superuser (sudo) privileges
+- If you don't have a aws account please watch the below video and create an aws account.
+  
+[![](https://markdown-videos-api.jorgenkh.no/youtube/ClQlilqpnuw?si=F_axvsa3pQXW4RPD)](https://youtu.be/ClQlilqpnuw?si=F_axvsa3pQXW4RPD)
+
 - Internet connectivity for downloading software components
 - Familiarity with your system's configuration and database connection details
 
@@ -105,75 +107,6 @@ start-tomcat
 ```
 stop-tomcat
 ```
-
-### How to Deploy the war file after the configuration
-- First copy the Public IP from the EC2 Elastic IP.
-- Then go to any web browser and paste the IP address with the 8080 port number.
-  ```
-  eg.
-  127.0.0.1:8080
-  The above example shows how exactly it looks when you paste your IP into a browser.
-  ```
-- Then it'll redirect you to the Tomcat Homepage Refer to the below Screenshot.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/b20c66b1-5f26-4045-b799-634066540910" alt="tomcat-home-page" width="700"/>
-
-- Now you can see the Manager App on right side Refer below Screenshot.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/4a6aea83-de41-4652-85a6-c24ebb10a1f7" alt="tomcat-home-page" width="700"/>
-
-- After Clicking the Manager App it asks you for your Username and Password refer below Screenshot for Reference.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/c9829584-3bd0-4a3a-8ddb-7e738c970571" alt="tomcat-tomcat-cred" width="700"/>
-
-- Use the below Credentials to manage your Tomcat Server.
-```
-USERNAME: admin
-PASSWORD: fssaadmin
-```
-
-- Once you log in using the above credentials you can see this page 
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/82631599-9059-4861-ba84-7cf312973c7e" alt="tomcat-tomcat-cred" width="700"/>
-
-## ⚠IMPORTANT‼
-- Before you deploy your WAR file into the cloud Machine make sure these things;
-- Check your Connection Util It should look like the below code snippet.
-```
-  // For database credentials
-		url = System.getenv("DATABASE_HOST");
-		userName = System.getenv("DATABASE_USERNAME");
-		passWord = System.getenv("DATABASE_PASSWORD");
-```
-- If everything is fine then clean the Maven WEB project by using the Maven Clean command.
-- After successful execution of the Maven clean command run the Maven Install Command.
-- Maven Install command should execute without any error and BUILD SUCCESS.
-- So that you'll get the updated WAR file for your project.
-
-- ### Make sure that you didn't face any errors during the above process.
-
-- Now come back to the Previous step where you opened Tomcat Manager.
-- In that, you can see the column called WAR file to deploy.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/cbe2c777-3f3f-4c57-89bd-c8633f34d896" alt="tomcat-tomcat-cred" width="700"/>
-
-- Go to Eclipse and in Project Explorer right-click on your WEB project. Eclipse>>Project Explorer>>Your WEB project>>Right click>>Show in>>System Explorer.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/115ae582-2d54-4752-9dc7-768dfd7cd0b0" alt="tomcat-tomcat-cred" width="700"/>
-
-- Once you open System Explorer you can see all the project folders Select your web project folder and open it there you can see the target folder.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/68257c6c-8c9e-4419-a9c4-7217736fb400" alt="tomcat-tomcat-cred" width="700"/>
-
-- Now in the target folder you'll find your WAR file.
-<img src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/bfc51495-2428-4222-93f4-5b4efc2dd601" alt="tomcat-tomcat-cred" width="700"/>
-
-- That's the WAR file you need to deploy in the Tomcat manager's page.
-- Now on  the tomcat manager's page, WAR deploy section choose the WAR file you want to deploy and upload the WAR. Refer above steps to find your WAR file.
- <img width="700" alt="image" src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/2330554b-98ad-4a3e-a8b9-159c6d980621">
- 
-- After choosing your WAR file click on Deploy It'll take some seconds and reloads automatically.
-- This how the application section will look like before Deploying.
- <img width="700" alt="image" src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/b2c1f92a-374c-44b9-a9cb-001cc3e147f9">
-
-
-- This how the application section will look like after Deploying your war. It show one new application with your WAR file name.
- <img width="700" alt="image" src="https://github.com/Hemanath78/Linux-Server-Setup-Script/assets/83415968/43f12df9-6626-4f42-a5de-ea97600a1e9c">
-
-
 
 ## Customization
 
