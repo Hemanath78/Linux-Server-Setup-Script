@@ -66,9 +66,9 @@ The script will perform the following tasks:
 
 - Check for JDK 17 and install it if not found.
 - Check for Apache Tomcat and install it if not found.
-- Prompt for Tomcat admin credentials and configure them.
+- Tomcat admin credentials and configure them.
 - Prompt for database configuration (host, username, password).
-- Create a setenv.sh script with database environment variables.
+- Creates a setenv.sh script with database environment variables.
 - Remove a specific Valve configuration from Tomcat's context.xml file.
 - Display status messages and handle errors gracefully.
 
@@ -106,6 +106,13 @@ start-tomcat
 ### Stop the tomcat server
 ```
 stop-tomcat
+```
+
+### Tomcat Manager App credentials 
+- Use the below Credentials to log into your tomcat manager app.
+```
+USERNAME: admin
+PASSWORD: fssaadmin
 ```
 
 ## Customization
